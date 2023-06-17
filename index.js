@@ -87,7 +87,7 @@ async function run() {
 
 
     // sdsdsdsd
-    // User related apsdissdfsdfsdsd
+    // User reldfsdsdsd
     app.post('/users', async (req, res) => {
       const user = req.body;
       // console.log(user)
