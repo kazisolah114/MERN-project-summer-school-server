@@ -44,7 +44,7 @@ async function run() {
     const classCollection = client.db("summerCampSchool").collection("classes");
     const userCollection = client.db('summerCampSchool').collection("users")
     const selectedClassCollection = client.db('summerCampSchool').collection("selectedClass")
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
 
     // JWT apis
@@ -104,7 +104,7 @@ async function run() {
     })
 
     // Verify Role APIS
-    app.get('/users/admin/:email', verifyJWT, async(req, res) => {
+    app.get('/users/admin/:email', verifyJWT, verifyAdmin, async(req, res) => {
       const email = req.params.email;
       if(req.decoded.email !== email) {
         return res.send({admin: false})
@@ -114,7 +114,7 @@ async function run() {
       const result = {admin: user?.role !== 'admin'};
       res.send(result)
     })
-    app.get('/users/instructor/:email', verifyJWT, async(req, res) => {
+    app.get('/users/instructor/:email', verifyJWT, verifyInstructor, async(req, res) => {
       const email = req.params.email;
       if(req.decoded.email !== email) {
         return res.send({instructor: false})
@@ -124,7 +124,7 @@ async function run() {
       const result = {instructor: user?.role !== 'instructor'};
       res.send(result)
     })
-    app.get('/users/student/:email', verifyJWT, verifyStudent, async(req, res) => {
+    app.get('/users/student/:email', verifyJWT, verifyAdmin, async(req, res) => {
       const email = req.params.email;
       if(req.decoded.email !== email) {
         return res.send({student: false})
@@ -252,7 +252,7 @@ async function run() {
 
 
 
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
